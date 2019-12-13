@@ -1,0 +1,1 @@
+Solution for https://2019.kringlecon.com reCAPTEHA task of image classification using Machine Learning tecnhiques.

@@ -1,0 +1,3 @@
+[submodule "img_rec_tf_ml_demo"]
+	path = img_rec_tf_ml_demo
+	url = git@github.com:chrisjd20/img_rec_tf_ml_demo.git
