@@ -19,12 +19,16 @@ Workflow (unsupervised): [TODO]
 Run as follows:  
 
 (train on existing data)  
-    > retrain.py --image_dir training_images  
-
+```
+> retrain.py --image_dir training_images  
+```
 (train on new data)  
-    > rm trainin_images/*  
-    > interact.py collect  
-    > retrain.py --image_dir training_images  
-
+```
+> rm trainin_images/*  
+> interact.py collect  
+> retrain.py --image_dir training_images  
+```
 (request reCAPTEHA and categorize images)  
-    > interact.py verify  
+```
+> interact.py verify  
+```
