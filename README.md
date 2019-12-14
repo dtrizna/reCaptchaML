@@ -14,3 +14,17 @@ Workflow (unsupervised): [TODO]
 2. Train unsupervised algorithm to sort all data to classes;  
 3. Name classes;  
 4. Request reCapteha, classify images, send solution;  
+
+
+Run as follows:  
+
+(train on existing data)  
+    > retrain.py --image_dir training_images  
+
+(train on new data)  
+    > rm trainin_images/*  
+    > interact.py collect  
+    > retrain.py --image_dir training_images  
+
+(request reCAPTEHA and categorize images)  
+    > interact.py verify  
