@@ -4,14 +4,19 @@ import pdb
 from base64 import b64decode as b64d
 import sys
 import predict
+import time
 #from urllib.parse import urlencode
 
 url = "https://fridosleigh.com/api/capteha/request"
 submit_url = "https://fridosleigh.com/api/capteha/submit"
-proxies = {'http':'127.0.0.1:8080','https':'127.0.0.1:8080'}
+#proxies = {'http':'127.0.0.1:8080','https':'127.0.0.1:8080'}
+proxies = None
+one = 0
 
 def requestImages():
     s = requests.session()
+    global one
+    one = time.time()
     resp = s.post(url=url,proxies=proxies,verify=False)
     parsed = json.loads(resp.text)
     print(f"[!] Got {len(parsed['images'])} images!")
@@ -65,9 +70,10 @@ def verifyImages(data,session):
         print("[!] Need to select images from following classes: {}"\
             .format(', '.join(myclasses)))
         # 1. LAUNCH TRAIN SCRIPT AND GET UUID OF IMAGES THAT ARE NEEDED
-        # 2. SEND IT WITHIN SAME SESSION TO SUBMIT     
+        # 2. SEND IT WITHIN SAME SESSION TO SUBMIT   
+        two = time.time()  
         prediction_results = predict.main(image_list)
-
+        three = time.time()
         # len(prediction_results) == num of images
         # prediction_results[i] == dict, like:
         # {'img_full_path': 'test_images/01e96130-e585-11e9-97c1-309c23aaf0ac.png', \ 
@@ -78,15 +84,21 @@ def verifyImages(data,session):
             if predictClass in myclasses:
                 valid_uuid = prediction['uuid']
                 answer.append(valid_uuid)
-                print(f"{valid_uuid} seem to be predicted as {predictClass}")
+                #print(f"{valid_uuid} seem to be predicted as {predictClass}")
         #print(answer)
         data_to_send = '%2C'.join(answer)
-        print(data_to_send)
+        #print(data_to_send)
         validation = session.post(url=submit_url,data='answer={}'.format(data_to_send),\
             proxies=proxies,verify=False)
-        
-        print(validation.cookies)
+        four = time.time()
+        #print(validation.cookies)
         print(validation.text)
+        
+        # ~ 1.8 - 2 sec
+        print(f"Initial data request parsed in {two - one} seconds.")
+        # 13-15 seconds!!!
+        print(f"\n Prediction took {three - two} seconds.")
+        print(f"\n Between initial request and response it was {four - one} seconds.")
 
 def main():
     try:

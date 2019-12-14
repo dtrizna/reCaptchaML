@@ -68,6 +68,7 @@ def main(image_list):
     #unknown_images_dir = 'test_images'
     #unknown_images = os.listdir(unknown_images_dir)
     
+    one = time.time()
     #Going to interate over each of our images.
     #for image in unknown_images:
     for uuid,image in image_list:
@@ -75,31 +76,27 @@ def main(image_list):
         
         #print('Processing Image {}'.format(img_full_path))
         # We don't want to process too many images at once. 10 threads max
-        while len(threading.enumerate()) > 10:
-            time.sleep(0.0001)
+        # while len(threading.enumerate()) > 10:
+        #    time.sleep(0.0001)
 
         #predict_image function is expecting png image bytes so we read image as 'rb' to get a bytes object
         #image_bytes = open(img_full_path,'rb').read()
         #threading.Thread(target=predict_image, args=(q, sess, graph, image_bytes, img_full_path, labels, input_operation, output_operation)).start()
         threading.Thread(target=predict_image, args=(q, sess, graph, image, uuid, labels, input_operation, output_operation)).start()
 
-
+    two = time.time()
+    print(f"Loaded all threads, took {two - one} seconds..")
     print('Waiting For Threads to Finish...')
     while q.qsize() < len(image_list):
-        time.sleep(0.001)
-    
+        time.sleep(0.0001)
+    three = time.time()
+    print(f"Thread finished, took {three - two} more seconds..")
     #getting a list of all threads returned results
     prediction_results = [q.get() for x in range(q.qsize())]
     #pdb.set_trace()
-
+    print(f"Giving results to interact.py after {time.time() - three} more seconds")
     return prediction_results
-    
-    #do something with our results... Like print them to the screen.
-    #for prediction in prediction_results:
-    #    print('TensorFlow Predicted {img_full_path} is a {prediction} with {percent:.2%} Accuracy'.format(**prediction))
-
 
 if __name__ == "__main__":
     print("Intented to run as module!")
-    image_list = []
-    main(image_list)
+    sys.exit(1)
