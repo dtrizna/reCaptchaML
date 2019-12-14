@@ -1,6 +1,6 @@
 Optimized for use on Windows 10 machine.  
   
-Workflow (supervised):  
+Workflow (supervised): [IN PROCESS]  
 1. Get as much as possible data using 'collect_images.py' (gets 2500 samples);  
 2. Sort data manually in sub-folders;  
 3. Train data, get wights file;  
